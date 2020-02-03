@@ -1,4 +1,5 @@
 const USERS_ROUTE = 'http://jsonplaceholder.typicode.com/users';
+const POSTS_ROUTE = 'https://jsonplaceholder.typicode.com/posts';
 
 function displayUsers(data) {
   let newList = document.getElementById("listUserName")
@@ -40,7 +41,7 @@ function displayUser(data) {
   newname.setAttribute("class", "card-title font-weight-bold")
   newCard.appendChild(newname)
 
-  newusername.textContent = data.username
+  newusername.textContent = "@"+data.username
   newusername.setAttribute("class", "card-subtitle mb-2 text-muted")
   newCard.appendChild(newusername)
 
@@ -59,6 +60,10 @@ function getUserData(id) {
     .then(response => response.json())
     .then(json => displayUser(json))
 }
-function getUserPostsData(userId){
-  
+
+function getUserPostsData(userId) {
+  fetch(POSTS_ROUTE)
+    .then(response => response.json())
+    .then(json => console.log(json))
 }
+getUserPostsData(4)
