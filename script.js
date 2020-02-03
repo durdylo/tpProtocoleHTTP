@@ -9,9 +9,15 @@ function displayUsers(data) {
     newUsername.textContent = currentElement.name
     newUsername.setAttribute("class", "list-group-item list-group-item-action")
     newUsername.setAttribute("type", "button")
+    newUsername.setAttribute("data-toggle", "list")
 
+    newUsername.addEventListener("click", function() {
+      getUserData(currentElement.id)
+    });
     newList.appendChild(newUsername)
   }
+
+
 }
 
 
@@ -23,24 +29,29 @@ function getUsersData() {
 
 
 getUsersData()
+let newCard = document.getElementById("cardUser")
+let newname = document.createElement("h5")
+let newusername = document.createElement("h6")
+let newUserCity = document.createElement("p")
+let newUserWebsite = document.createElement("a")
 
 function displayUser(data) {
-  let newCard = document.getElementById("cardUser")
-  let newname = document.createElement("h5")
   newname.textContent = data.name
-  newname.setAttribute("class", "card-title")
+  newname.setAttribute("class", "card-title font-weight-bold")
   newCard.appendChild(newname)
 
-  let newusername = document.createElement("h6")
   newusername.textContent = data.username
   newusername.setAttribute("class", "card-subtitle mb-2 text-muted")
   newCard.appendChild(newusername)
 
-  let newUserCity = document.createElement("p")
-  newUserAdress = data.address
-  newUserCity.textContent = newUserAdress.city
+  newUserCity.textContent = data.address.city
   newUserCity.setAttribute("class", "card-text")
   newCard.appendChild(newUserCity)
+
+  newUserWebsite.textContent = data.website
+  newUserWebsite.setAttribute("class", "card-link")
+  newUserWebsite.setAttribute("href", "#")
+  newCard.appendChild(newUserWebsite)
 }
 
 function getUserData(id) {
@@ -48,4 +59,6 @@ function getUserData(id) {
     .then(response => response.json())
     .then(json => displayUser(json))
 }
-getUserData(4)
+function getUserPostsData(userId){
+  
+}
