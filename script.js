@@ -1,6 +1,7 @@
-const USERS_ROUTE = 'http://jsonplaceholder.typicode.com/users';
+const USERS_ROUTE = 'https://jsonplaceholder.typicode.com/users';
 const POSTS_ROUTE = 'https://jsonplaceholder.typicode.com/posts';
 
+let lastClick;
 function displayUsers(data) {
   let newList = document.getElementById("listUserName")
   // console.log(data);
@@ -11,16 +12,22 @@ function displayUsers(data) {
     newUsername.setAttribute("class", "list-group-item list-group-item-action")
     newUsername.setAttribute("type", "button")
     newUsername.setAttribute("data-toggle", "list")
-
     newUsername.addEventListener("click", function() {
+      if (lastClick !== undefined) {
+        lastClick.style.fontWeight="normal";
+      }
+      newUsername.style.fontWeight="bold";
+      lastClick=newUsername;
+
+
       getUserData(currentElement.id)
+
     });
     newList.appendChild(newUsername)
   }
 
 
 }
-
 
 function getUsersData() {
   fetch(USERS_ROUTE)
@@ -55,15 +62,33 @@ function displayUser(data) {
   newCard.appendChild(newUserWebsite)
 }
 
+
+
 function getUserData(id) {
   fetch(USERS_ROUTE + "/" + id)
     .then(response => response.json())
     .then(json => displayUser(json))
 }
 
-function getUserPostsData(userId) {
-  fetch(POSTS_ROUTE)
-    .then(response => response.json())
-    .then(json => console.log(json))
+
+let postsContainer = document.getElementById("postsContainer")
+function displayUserPosts(data) {
+  for (var i = data.length-1; i >= 0; i--) {
+    let currentElement = data[i]
+    let newPost = document.createElement("div")
+    newPost.setAttribute("card-body")
+    postsContainer.appendChild(newPost)
+
+    let newTitle = document.createElement("h5")
+    newTitle.textContent = currentElement.title
+    newTitle.setAttribute("class", "card-title font-weight-bold")
+    newPost.appendChild(newTitle)
+  }
+
+
 }
-getUserPostsData(4)
+function getUserPostsData(userId) {
+  fetch(POSTS_ROUTE + "?userId=" + userId)
+    .then(response => response.json())
+    .then(json => displayUserPosts(json))
+}
